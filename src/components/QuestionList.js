@@ -15,16 +15,12 @@ function QuestionList() {
 
   }, [] )
 
-  function handleSubmitQuestion(newQuestion){
-    console.log("updates");
-    setQuestions([...questions, newQuestion]);
-  }
+  
 
   function handleDeleteItem(id){
     fetch(`http://localhost:4000/questions/${id}`,{
       method: "DELETE"
     })
-    .then(r=>r.json())
     .then(data=>{
       console.log(data);
       const updatedQuestions=questions.filter((question)=>{
@@ -32,15 +28,37 @@ function QuestionList() {
       })
       setQuestions(updatedQuestions)
     })
+
+    
   }
+
+  function handleQuestionUpdate(id, newCorrectIndex){
+      fetch(`http://localhost:4000/questions/${id}`,{
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body:JSON.stringify({
+          correctIndex: newCorrectIndex,
+        }),
+      })
+      .then(r=>r.json())
+      .then(updatedQuestion=>{
+        const updatedQuestions=questions.map((question)=>{
+          return question.id===updatedQuestion.id?updatedQuestion:question
+        })
+        setQuestions(updatedQuestions);
+        
+      })
+    }
   return (
     <section>
       <h1>Quiz Questions</h1>
       <ul>{questions.map((question)=>(
-        < QuestionItem key={question.id} question={question} onDeleteQuestion={handleDeleteItem}/>
+        < QuestionItem key={question.id} question={question} onDeleteQuestion={handleDeleteItem} onQuestionUpdate={handleQuestionUpdate}/>
     ))}
        </ul>
-       <QuestionForm onUpdateQuestion={handleSubmitQuestion} />
+    
       
     </section>
   );
