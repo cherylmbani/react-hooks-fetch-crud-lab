@@ -8,7 +8,6 @@ function App() {
   const[questions, setQuestions]=useState([]);
 
   function handleSubmitQuestion(newQuestion){
-    console.log("updates");
     setQuestions((prevQuestions)=>[...prevQuestions,newQuestion])
   }
 

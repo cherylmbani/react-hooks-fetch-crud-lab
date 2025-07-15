@@ -8,7 +8,6 @@ function QuestionList() {
     fetch("http://localhost:4000/questions")
     .then(r=>r.json())
     .then(data=>{
-      console.log(data);
         setQuestions(data)
       
     })
@@ -22,7 +21,6 @@ function QuestionList() {
       method: "DELETE"
     })
     .then(data=>{
-      console.log(data);
       const updatedQuestions=questions.filter((question)=>{
         return question.id!==id;
       })
